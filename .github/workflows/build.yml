@@ -1,0 +1,59 @@
+name: Build kgrid40
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: zmkfirmware/zmk-build-arm:stable
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache west modules
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-zephyr-modules
+        with:
+          path: |
+            modules/
+            tools/
+            zephyr/
+            bootloader/
+            zmk/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('config/west.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: West Init
+        run: west init -l config
+      - name: West Update
+        run: west update
+      - name: West Zephyr export
+        run: west zephyr-export
+
+      # 1. kgrid40 (一体型) のビルド (nice_nanoを指定)
+      - name: West Build (kgrid40)
+        run: |
+          west build -s zmk/app -b nice_nano -- -DSHIELD=kgrid40 -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
+          cp build/zephyr/zmk.uf2 kgrid40.uf2
+
+      # 2. Settings Reset のビルド (nice_nanoを指定)
+      - name: West Build (Settings Reset)
+        run: |
+          rm -rf build
+          west build -s zmk/app -b nice_nano -- -DSHIELD=settings_reset -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
+          cp build/zephyr/zmk.uf2 settings_reset.uf2
+
+      # 3. 成果物をひとつのフォルダにまとめてアップロード
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: kgrid40_firmware
+          path: |
+            kgrid40.uf2
+            settings_reset.uf2
+          compression-level: 0

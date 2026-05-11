@@ -1,0 +1,6 @@
+if SHIELD_KGRID38
+
+config ZMK_KEYBOARD_NAME
+    default "kgrid38"
+
+endif

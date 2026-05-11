@@ -1,2 +1,0 @@
-config SHIELD_KGRID40
-    def_bool $(shields_list_contains,kgrid40)

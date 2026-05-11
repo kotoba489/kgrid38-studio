@@ -1,4 +1,4 @@
-name: Build kgrid40
+name: Build kgrid38
 
 on: [push, pull_request, workflow_dispatch]
 
@@ -35,11 +35,11 @@ jobs:
       - name: West Zephyr export
         run: west zephyr-export
 
-      # 1. kgrid40 (一体型) のビルド (nice_nanoを指定)
-      - name: West Build (kgrid40)
+      # 1. kgrid38 (一体型) のビルド (nice_nanoを指定)
+      - name: West Build (kgrid38)
         run: |
-          west build -s zmk/app -b nice_nano -- -DSHIELD=kgrid40 -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
-          cp build/zephyr/zmk.uf2 kgrid40.uf2
+          west build -s zmk/app -b nice_nano -- -DSHIELD=kgrid38 -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
+          cp build/zephyr/zmk.uf2 kgrid38.uf2
 
       # 2. Settings Reset のビルド (nice_nanoを指定)
       - name: West Build (Settings Reset)
@@ -52,8 +52,8 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: kgrid40_firmware
+          name: kgrid38_firmware
           path: |
-            kgrid40.uf2
+            kgrid38.uf2
             settings_reset.uf2
           compression-level: 0

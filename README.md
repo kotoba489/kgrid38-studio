@@ -1,5 +1,5 @@
-<img width="250" height="246" alt="スクリーンショット 2026-05-23 9 57 08" src="https://github.com/user-attachments/assets/dc0d9752-5a5c-45a3-bbe0-0ef8810dcff4" />
 
+<img width="250" height="246" alt="スクリーンショット 2026-05-23 9 57 08" src="https://github.com/user-attachments/assets/2e87e711-ca1a-4971-a72c-6d3d7c79b1cd" />
 
 # kgrid38
 38% (4x10 → 最下段8キー) Grid Layout 一体型カスタムキーボードプロジェクト。
